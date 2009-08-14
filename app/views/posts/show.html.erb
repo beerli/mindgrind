@@ -1,0 +1,65 @@
+<p>
+  <b>Title:</b>
+  <%=h @post.title %>
+</p>
+
+<p>
+  <b>Body:</b>
+  <%=h @post.body %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%=h @post.owner %>
+</p>
+
+<p>
+  <b>Shownuser:</b>
+  <%=h @post.shownuser %>
+</p>
+
+<p>
+  <b>Visible:</b>
+  <%=h @post.visible %>
+</p>
+<hr />
+<p>
+	<% @comment.each do |x| %>
+	<%=x.body%>
+	<%end%>
+	
+<hr />
+
+<% form_for(@newcomment) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :body %><br />
+    <%= f.text_area :body %>
+  </p>
+  <p>
+    <%= f.label :owner %><br />
+    <%= f.text_field :owner %>
+  </p>
+  <p>
+    <%= f.label :shownuser %><br />
+    <%= f.text_field :shownuser %>
+  </p>
+  <p>
+    <%= f.label :visible %><br />
+    <%= f.check_box :visible %>
+  </p>
+
+    <%= f.hidden_field :post_id, :value => @post.id %>
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>

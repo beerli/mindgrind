@@ -1,0 +1,28 @@
+<h1>Listing comments</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Body</th>
+    <th>Owner</th>
+    <th>Shownuser</th>
+    <th>Visible</th>
+  </tr>
+
+<% @comments.each do |comment| %>
+  <tr>
+    <td><%=h comment.title %></td>
+    <td><%=h comment.body %></td>
+    <td><%=h comment.owner %></td>
+    <td><%=h comment.shownuser %></td>
+    <td><%=h comment.visible %></td>
+    <td><%= link_to 'Show', comment %></td>
+    <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
+    <td><%= link_to 'Destroy', comment, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New comment', new_comment_path %>

@@ -1,0 +1,28 @@
+<p>
+  <b>Title:</b>
+  <%=h @comment.title %>
+</p>
+
+<p>
+  <b>Body:</b>
+  <%=h @comment.body %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%=h @comment.owner %>
+</p>
+
+<p>
+  <b>Shownuser:</b>
+  <%=h @comment.shownuser %>
+</p>
+
+<p>
+  <b>Visible:</b>
+  <%=h @comment.visible %>
+</p>
+
+
+<%= link_to 'Edit', edit_comment_path(@comment) %> |
+<%= link_to 'Back', comments_path %>

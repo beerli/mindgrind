@@ -1,0 +1,123 @@
+  [4;36;1mSQL (1.4ms)[0m   [0;1mSELECT count(*) AS count_all FROM "comments" [0m
+
+
+Processing CommentsController#create (for 0.0.0.0 at 2009-08-14 02:59:25) [POST]
+  Parameters: {"action"=>"create", "controller"=>"comments", "comment"=>{}}
+Rendering template within layouts/comments
+Rendering comments/new
+Completed in 102ms (View: 45, DB: 328) | 200 OK [http://test.host/comments?]
+  [4;35;1mSQL (1.6ms)[0m   [0mSELECT count(*) AS count_all FROM "comments" [0m
+  [4;36;1mSQL (2.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "comments" [0m
+  [4;35;1mComment Load (6.0ms)[0m   [0mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+
+
+Processing CommentsController#destroy (for 0.0.0.0 at 2009-08-14 02:59:26) [DELETE]
+  Parameters: {"action"=>"destroy", "id"=>"2053932785", "controller"=>"comments"}
+  [4;36;1mComment Load (1.8ms)[0m   [0;1mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+  [4;35;1mComment Destroy (1.4ms)[0m   [0mDELETE FROM "comments" WHERE "id" = 2053932785[0m
+Redirected to http://test.host/comments
+Completed in 10ms (DB: 13) | 302 Found [http://test.host/comments/2053932785]
+  [4;36;1mSQL (10.3ms)[0m   [0;1mSELECT count(*) AS count_all FROM "comments" [0m
+  [4;35;1mComment Load (1.9ms)[0m   [0mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+
+
+Processing CommentsController#edit (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"edit", "id"=>"2053932785", "controller"=>"comments"}
+  [4;36;1mComment Load (1.7ms)[0m   [0;1mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+Rendering template within layouts/comments
+Rendering comments/edit
+Completed in 36ms (View: 31, DB: 14) | 200 OK [http://test.host/comments/2053932785/edit]
+
+
+Processing CommentsController#index (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"index", "controller"=>"comments"}
+  [4;35;1mComment Load (2.8ms)[0m   [0mSELECT * FROM "comments" [0m
+Rendering template within layouts/comments
+Rendering comments/index
+Completed in 43ms (View: 34, DB: 3) | 200 OK [http://test.host/comments]
+
+
+Processing CommentsController#new (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"new", "controller"=>"comments"}
+Rendering template within layouts/comments
+Rendering comments/new
+Completed in 22ms (View: 19, DB: 0) | 200 OK [http://test.host/comments/new]
+  [4;36;1mComment Load (2.0ms)[0m   [0;1mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+
+
+Processing CommentsController#show (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"show", "id"=>"2053932785", "controller"=>"comments"}
+  [4;35;1mComment Load (1.7ms)[0m   [0mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+Rendering template within layouts/comments
+Rendering comments/show
+Completed in 40ms (View: 31, DB: 4) | 200 OK [http://test.host/comments/2053932785]
+  [4;36;1mComment Load (2.7ms)[0m   [0;1mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+
+
+Processing CommentsController#update (for 0.0.0.0 at 2009-08-14 02:59:26) [PUT]
+  Parameters: {"action"=>"update", "id"=>"2053932785", "controller"=>"comments", "comment"=>{}}
+  [4;35;1mComment Load (1.7ms)[0m   [0mSELECT * FROM "comments" WHERE ("comments"."id" = 2053932785) [0m
+Redirected to http://test.host/comments/2053932785
+Completed in 22ms (DB: 4) | 302 Found [http://test.host/comments/2053932785?]
+  [4;36;1mSQL (1.4ms)[0m   [0;1mSELECT count(*) AS count_all FROM "posts" [0m
+
+
+Processing PostsController#create (for 0.0.0.0 at 2009-08-14 02:59:26) [POST]
+  Parameters: {"action"=>"create", "post"=>{}, "controller"=>"posts"}
+Rendering template within layouts/posts
+Rendering posts/new
+Completed in 62ms (View: 22, DB: 1) | 200 OK [http://test.host/posts?]
+  [4;35;1mSQL (1.3ms)[0m   [0mSELECT count(*) AS count_all FROM "posts" [0m
+  [4;36;1mSQL (1.5ms)[0m   [0;1mSELECT count(*) AS count_all FROM "posts" [0m
+  [4;35;1mPost Load (1.4ms)[0m   [0mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+
+
+Processing PostsController#destroy (for 0.0.0.0 at 2009-08-14 02:59:26) [DELETE]
+  Parameters: {"action"=>"destroy", "id"=>"2053932785", "controller"=>"posts"}
+  [4;36;1mPost Load (1.5ms)[0m   [0;1mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+  [4;35;1mPost Destroy (2.1ms)[0m   [0mDELETE FROM "posts" WHERE "id" = 2053932785[0m
+Redirected to http://test.host/posts
+Completed in 10ms (DB: 8) | 302 Found [http://test.host/posts/2053932785]
+  [4;36;1mSQL (1.1ms)[0m   [0;1mSELECT count(*) AS count_all FROM "posts" [0m
+  [4;35;1mPost Load (1.9ms)[0m   [0mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+
+
+Processing PostsController#edit (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"edit", "id"=>"2053932785", "controller"=>"posts"}
+  [4;36;1mPost Load (1.5ms)[0m   [0;1mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+Rendering template within layouts/posts
+Rendering posts/edit
+Completed in 29ms (View: 25, DB: 5) | 200 OK [http://test.host/posts/2053932785/edit]
+
+
+Processing PostsController#index (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"index", "controller"=>"posts"}
+  [4;35;1mPost Load (2.8ms)[0m   [0mSELECT * FROM "posts" [0m
+Rendering template within layouts/posts
+Rendering posts/index
+Completed in 23ms (View: 15, DB: 3) | 200 OK [http://test.host/posts]
+
+
+Processing PostsController#new (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"new", "controller"=>"posts"}
+Rendering template within layouts/posts
+Rendering posts/new
+Completed in 12ms (View: 10, DB: 0) | 200 OK [http://test.host/posts/new]
+  [4;36;1mPost Load (2.0ms)[0m   [0;1mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+
+
+Processing PostsController#show (for 0.0.0.0 at 2009-08-14 02:59:26) [GET]
+  Parameters: {"action"=>"show", "id"=>"2053932785", "controller"=>"posts"}
+  [4;35;1mPost Load (1.7ms)[0m   [0mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+  [4;36;1mComment Load (0.6ms)[0m   [0;1mSELECT * FROM "comments" WHERE ("comments"."post_id" = '2053932785') [0m
+Rendering template within layouts/posts
+Rendering posts/show
+Completed in 29ms (View: 20, DB: 4) | 200 OK [http://test.host/posts/2053932785]
+  [4;35;1mPost Load (2.0ms)[0m   [0mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+
+
+Processing PostsController#update (for 0.0.0.0 at 2009-08-14 02:59:26) [PUT]
+  Parameters: {"action"=>"update", "post"=>{}, "id"=>"2053932785", "controller"=>"posts"}
+  [4;36;1mPost Load (1.7ms)[0m   [0;1mSELECT * FROM "posts" WHERE ("posts"."id" = 2053932785) [0m
+Redirected to http://test.host/posts/2053932785
+Completed in 12ms (DB: 4) | 302 Found [http://test.host/posts/2053932785?]
