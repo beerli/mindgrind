@@ -1,8 +1,16 @@
 class PostsController < ApplicationController
+  before_filter :require_user, :only => [:edit, :destroy, :update]
+  
   # GET /posts
   # GET /posts.xml
   def index
-    @posts = Post.all
+   
+   
+    @posts = Post.paginate :page => params[:page], :per_page  => 10, :order  => "created_at DESC"
+#    @posts = Post.find(:all, :order =>  "id DESC")
+#    @posts = Post.find_tagged_with("test")
+    @user = current_user
+    
 
     respond_to do |format|
       format.html # index.html.erb
@@ -10,12 +18,26 @@ class PostsController < ApplicationController
     end
   end
 
+  def tag
+    @posts = Post.find_tagged_with(params[:id])
+    @user = current_user
+    
+    render "index"
+#    respond_to do |format|
+#      format.html # index.html.erb
+#      format.xml  { render :xml => @posts }
+#    end
+  end
+
   # GET /posts/1
   # GET /posts/1.xml
+
   def show
     @post = Post.find(params[:id])
     @newcomment = Comment.new 
     @comment = Comment.find(:all, :conditions => {:post_id => params[:id]})
+      
+  
       
     respond_to do |format|
       format.html # show.html.erb
@@ -77,7 +99,12 @@ class PostsController < ApplicationController
   # DELETE /posts/1.xml
   def destroy
     @post = Post.find(params[:id])
+    @user = current_user
+  if @post.owner == @user.id
     @post.destroy
+  else
+    flash[:notice] = "das ist nicht dein posting, punk!"
+  end
 
     respond_to do |format|
       format.html { redirect_to(posts_url) }

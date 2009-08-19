@@ -1,0 +1,185 @@
+/*  
+Theme Name: LoveNull
+Theme URI: http://www.nullislove.com
+Description: Custom theme based on the famous <a href="http://binarybonsai.com/kubrick/">Kubrick</a>.
+Version: 1.0
+Author: Kevin Skoglund
+Author URI: http://www.pixelandpress.com
+*/
+
+/* Structure */
+html { height: 100%; width: 100%; }
+body { font-family: 'Lucida Grande', Lucida, Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 10px; text-align: center; color: #333333; background: #E7E7E7; 
+	width: 970px; height: 100%; margin: 10px auto; padding: 0px; border: 0px; }
+
+#header { width: 970px; height: 200px; margin: 0px; padding: 0px; 
+	background: url('images/nil_header.jpg') 0 0 no-repeat; }
+#headerlink { float: left; width: 405px; height: 137px; margin: 39px 0px 0px 20px;}
+#headertext { float: right; 
+	width: 475px; height: 125px; margin: 39px 20px 0px 0px; padding: 5px 1em;
+	font: italic 18px Georgia, "Times New Roman", serif; color: #FFFFFF; text-align: right; }
+
+#page { width: 970px; margin: 0px; padding: 0px; text-align: left; 
+	background: #FFFFFF url("images/lovenull_page.gif") repeat-y top; border: none; }
+
+#content { font-size: 1.2em }
+
+.navigation { display: block; text-align: center; padding-top: 0px; margin-bottom: 60px; }
+
+.widecolumn { float: left; line-height: 1.6em; padding: 10px 0 20px 25px; margin: 0px; width: 650px; }
+.widecolumn .entry { line-height: 1.4em; }
+.widecolumn .entry p { font-size: 1.05em; }
+.widecolumn .post { margin: 0; }
+.widecolumn .postmetadata { margin: 30px 0; }
+.widecolumn .smallattachment { text-align: center; float: left; width: 128px; margin: 5px 5px 5px 0px; }
+.widecolumn .attachment { text-align: center; margin: 5px 0px; }
+
+.narrowcolumn { float: left; padding: 0 0 20px 25px; margin: 0px; width: 650px; }
+.narrowcolumn .entry { line-height: 1.4em; }
+.narrowcolumn .postmetadata { text-align: center; padding-top: 5px; }
+.post { margin: 0 0 40px; text-align: justify; }
+.post hr { display: block; }
+.postmetadata { color: #777777; clear: left; }
+#footer { background: #FFFFFF url('images/lovenull_footer.gif') no-repeat top; border: none;
+	padding: 0px; margin: 0px; width: 970px; height: 63px; clear: both; }
+#footer p { margin: 0px; padding: 20px 0; text-align: center; }
+.center { text-align: center; }
+
+
+/* Links */
+a { color: #114477; text-decoration: none; }
+a:hover { color: #0066CC; text-decoration: underline; }
+h1 a, h1 a:hover, h1 a:visited { text-decoration: none; color: #FFFFFF; }
+h2 a, h2 a:hover, h2 a:visited { color: #004080; }
+h3 a, h3 a:hover, h3 a:visited { color: #004080; }
+/*h2 a:hover, h3 a:hover { color: #0066CC; text-decoration: none; }*/
+#sidebar h2 { color: #004080; }
+.entry p a:visited { color: #004080; }
+
+
+/*	Headers */
+h1, h2, h3 { font-family: 'Trebuchet MS', 'Lucida Grande', Verdana, Arial, sans-serif; font-weight: bold; }
+h1 { font-size: 4em; text-align: center; padding-top: 70px; margin: 0; }
+h2 { font-size: 1.6em; margin: 30px 0 0; }
+h3 { font-size: 1.3em; padding: 0; margin: 30px 0 0; }
+h2.pagetitle { font-size: 1.6em; margin-top: 30px; text-align: center; }
+#sidebar h2 { font-size: 1.2em; margin: 5px 0 0; padding: 0; }
+h3.comments { padding: 0; margin: 40px auto 20px ; }
+
+
+/* Images */
+p img { padding: 0; max-width: 100%; }
+a img { border: none; }
+img.centered { display: block; margin-left: auto; margin-right: auto; }
+img.alignright { padding: 4px; margin: 0 0 2px 7px; display: inline; }
+img.alignleft { padding: 4px; margin: 0 7px 2px 0; display: inline; }
+.alignright { float: right; }
+.alignleft { float: left }
+
+
+/* Lists */
+/* Special stylized bullets, will not work in IE, which defaults to normal bullets. */
+html>body .entry ul { margin-left: 0px; padding: 0 0 0 10px; list-style: none; text-indent: -10px; } 
+html>body .entry li { margin: 7px 0 8px 10px; }
+.entry ul li:before, #sidebar ul ul li:before { content: "\00BB \0020"; }
+
+.entry ol { padding: 0 0 0 35px; margin: 0; }
+.entry ol li { margin: 0; padding: 0; }
+.postmetadata ul, .postmetadata li { display: inline; list-style-type: none; list-style-image: none; }
+
+
+/* Form Elements */
+#searchform { margin: 10px auto; padding: 5px 3px;  text-align: center; }
+#sidebar #searchform #s { width: 133px; padding: 2px; }
+#sidebar #searchsubmit { padding: 1px; }
+.entry form { /* This is mainly for password protected posts, makes them look better. */
+	text-align:center; }
+select { width: 130px; }
+#commentform input { width: 170px; padding: 2px; margin: 5px 5px 1px 0; }
+#commentform textarea { width: 100%; padding: 2px; }
+#commentform #submit { margin: 0; float: right; }
+
+
+/* Comments*/
+#commentform input, #commentform textarea { font-size: 0.9em; }
+#commentform p { margin: 5px 0; }
+.commentlist { padding: 0; text-align: justify; }
+.commentlist li { font-size: 0.9em; font-weight: bold; 
+	margin: 15px 0 3px; padding: 5px 10px 3px; list-style: none; }
+.commentlist cite, .commentlist cite a { font-weight: bold; font-style: normal; font-size: 1.1em; }
+.commentlist p { font-weight: normal; line-height: 1.5em; text-transform: none; margin: 10px 5px 10px 0; }
+.commentmetadata { font-weight: normal; margin: 0; display: block; }
+.alt { background-color: #F8F8F8; border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; margin: 0; padding: 10px; }
+.nocomments { color: #777777; text-align: center; margin: 0; padding: 0; }
+
+
+/* Sidebar */
+#sidebar { width: 200px; padding: 20px 0px 10px 0px; margin-left: 745px; font-size: 1em; }
+#sidebar ul { margin: 0px; padding: 0px; }
+#sidebar ul li { list-style-type: none; list-style-image: none; margin-bottom: 15px; }
+#sidebar ul ul { margin: 5px 0px 0px 10px; }
+#sidebar ul ul li { margin: 3px 0px 0px; padding: 0px; color: #777777; }
+#sidebar ul ul ul { margin: 0px 0px 0px 10px; }
+#sidebar form { margin: 0px; }
+#sidebar ul select { margin: 5px 0px 8px; }
+#sidebar ul p { margin: 5px 0px 8px; }
+
+/* Calendar */
+#wp-calendar caption, cite { text-decoration: none; }
+#wp-calendar #prev a, #wp-calendar #next a { font-size: 9pt; }
+#wp-calendar a { text-decoration: none; }
+#wp-calendar caption { font-weight: bold; font-size: 1.3em; text-align: center; }
+#wp-calendar th { font-style: normal; text-transform: capitalize; }
+#wp-calendar { empty-cells: show; margin: 10px auto 0; width: 155px; }
+#wp-calendar #next a { padding-right: 10px; text-align: right; }
+#wp-calendar #prev a { padding-left: 10px; text-align: left; }
+#wp-calendar a { display: block; }
+#wp-calendar caption { text-align: center; width: 100%; }
+#wp-calendar td { padding: 3px 0; text-align: center; }
+#wp-calendar td.pad:hover { /* Doesn't work in IE */ background-color: #fff; }
+
+/* other tags */
+small { font-family: Arial, Helvetica, sans-serif; font-size: 0.9em; line-height: 1.5em; color: #777777; }
+blockquote, strike { color: #777777; }
+code { font: 1.1em 'Courier New', Courier, Fixed; }
+.code { font: 1em 'Courier New', Courier, Fixed; font-weight: bold;}
+acronym, abbr { font-size: 0.9em; letter-spacing: .07em; cursor: help; border-bottom: 1px dashed #999999; }
+span.caps { font-size: 0.9em; letter-spacing: .07em; cursor: help; }
+blockquote { margin: 15px 30px 0 10px; padding-left: 20px; border-left: 5px solid #DDDDDD; }
+blockquote cite { margin: 5px 0 0; display: block; }
+hr { display: none; }
+
+/* Codecolorer styles */
+/* Codecolorer structure */
+.codecolorer { white-space: nowrap; }
+.codecolorer-container { overflow: auto; width: 600px; font-family: monospace; white-space: nowrap; }
+.codecolorer-container { border: 1px solid #CCCCCC; background: #EEEEEE; padding: 5px; margin: 10px;}
+ol .codecolorer-container, ul .codecolorer-container { width: 400px; }
+.commentlist .codecolorer-container { width: 500px; }
+.commentlist blockquote .codecolorer-container { width: 400px; }
+
+/* Codecolorer color scheme */
+.codecolorer .de1, .codecolorer .de2 {font-family: 'Courier New', Courier, monospace; font-weight: normal;}
+.codecolorer .imp {font-weight: bold; color: red;}
+.codecolorer .ln-xtra {color: #cc0; background-color: #ffc;}
+.codecolorer li {font-family: 'Courier New', Courier, monospace; color: black; font-weight: normal; font-style: normal;}
+.codecolorer li.li2 {font-weight: bold;}
+.codecolorer .kw1 {color: #006600;} /* keywords: dark green */
+.codecolorer .kw2 {color: #0E23F8;} /* keywords: blue */
+.codecolorer .kw3 {color: #0000A1;} /* keywords: dark blue */
+.codecolorer .co1 {color: #808080; font-style: italic;} /* comments */
+.codecolorer .co2 {color: #808080; font-style: italic;} /* comments */
+.codecolorer .coMULTI {color: #808080; font-style: italic;} /* comments */
+.codecolorer .es0 {color: #000099; font-weight: bold;} /* escaped */
+.codecolorer .br0 {color: #006600;} /* brackets: dark green */
+.codecolorer .st0 {color: #c4050a;} /* strings: dark red */
+.codecolorer .nu0 {color: #CC66FF;} /* numbers: light purple */
+.codecolorer .me1 {color: #0000A1;} /* methods: dark blue */
+.codecolorer .me2 {color: #0000A1;} /* methods: dark blue */
+.codecolorer .sc0 {}
+.codecolorer .sc1 {}
+.codecolorer .sc2 {}
+.codecolorer .sc3 {}
+.codecolorer .re0 {color: #0000FF;} /* blue */
+.codecolorer .re1 {color: #CC66CC} /* red */

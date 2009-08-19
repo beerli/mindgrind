@@ -41,4 +41,8 @@ Rails::Initializer.run do |config|
   
   # Added for AuthLogic
   config.gem "authlogic"
+  config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
+  
+  
+
 end

@@ -1,12 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :comments
-
-  map.resources :posts
   
+
+  map.resources :comments
+  map.resources :posts
+  map.resources :main
   map.resource :user_session
   map.resource :account, :controller => "users"
   map.resources :users
-  
+  map.resources :topquotes
 
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -49,6 +50,8 @@ ActionController::Routing::Routes.draw do |map|
   # consider removing or commenting them out if you're using named routes and resources.
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+  
+  #map.connect ':controller/:action/:tag'
   
   
 end

@@ -1,0 +1,18 @@
+<% @posts.each do |post| %>
+<div class="post">
+<p class="post_title"><%=h post.title %></p>
+<p class="post_body"><%=h post.body %></p>
+<p class="post_tags">
+	<% post.tag_list.each do |tag| %>
+		<%=h tag %>&nbsp;
+	<% end %>
+</p>
+<p class="post_foot">[<%=h post.shownuser %>&nbsp;01.01.2009
+	<%if @user.id == post.owner%>
+    	<%= link_to 'Edit', edit_post_path(post) %>&nbsp;
+    	<%= link_to 'Destroy', post, :confirm => 'Are you sure?', :method => :delete %> 
+	<% end %>
+	<a href="posts/<%=h post.id %>">permalink</a>]
+</p>
+</div>
+<% end %>

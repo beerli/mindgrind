@@ -1,0 +1,682 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="en-US"><head profile="http://gmpg.org/xfn/11">
+
+  
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Null is Love  » Blog Archive   » Pagination in Rails</title>
+    <meta name="generator" content="WordPress 2.7.1"> <!-- leave this for stats -->
+    <meta name="author" content="Kevin Skoglund, Pixel and Press, Inc.">
+    <meta name="copyright" content="Copyright 2007, Pixel and Press, Inc.">
+    <meta name="keywords" content="Null is Love, Null, Love, Pixel and Press, Kevin Skoglund, Ruby on Rails, Ruby, Rails, PHP, MySQL, SQL, CSS, HTML, blog, programmer, developer, designer, program, develop, design, code, tips, tricks, help, learn, educate, train, databases, applications, JavaScript, Ajax, Apache, nil">
+    <meta name="description" content="A blog on web application development with Ruby on Rails, PHP, MySQL, CSS and HTML">
+    <meta name="revisit-after" content="3 days">
+    <meta name="robots" content="follow,index">
+    <!--
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    -->
+    <link rel="stylesheet" href="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/style.css" type="text/css" media="all">
+    <link rel="stylesheet" href="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/styles.css" type="text/css" media="all">
+    
+    <link rel="alternate" type="application/rss+xml" title="Null is Love RSS Feed" href="http://www.nullislove.com/feed/">
+    <link rel="pingback" href="http://www.nullislove.com/xmlrpc.php">
+        <script src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/a" type="text/javascript"></script><script src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/a_002" type="text/javascript"></script>
+  <link media="all" href="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/widget12.css" type="text/css" rel="stylesheet"></head><body><object type="application/x-shockwave-flash" data="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/button1.swf" id="atff" style="width: 1px; height: 1px; position: absolute; z-index: 100000;"><param value="transparent" name="wmode"><param value="always" name="allowScriptAccess"></object>
+        <div id="header">      &nbsp;
+      <a id="headerlink" href="http://www.nullislove.com/">&nbsp;</a>
+      <div id="headertext">
+        <br>
+	“Perfection is achieved, not when<br>
+	there is nothing more to add, but when<br>
+	there is nothing left to take away.”<br>
+	–Antoine de Saint-Exupéry<br>
+	<br>      </div>
+    </div>
+    <div id="page">
+
+	<div id="content" class="widecolumn">
+
+	
+		<div class="navigation">
+			<div class="alignleft">« <a href="http://www.nullislove.com/2007/05/23/railsconf-europe-2007-railsconf-2008/">RailsConf Europe 2007 / RailsConf 2008</a></div>
+			<div class="alignright"><a href="http://www.nullislove.com/2007/05/25/the-good-the-bad-and-the-ugly/">The Good, the Bad and the Ugly</a> »</div>
+		</div>
+
+		<div class="post" id="post-72">
+			<h2><a href="http://www.nullislove.com/2007/05/24/pagination-in-rails/" rel="bookmark" title="Permanent Link: Pagination in Rails">Pagination in Rails</a></h2>
+
+			<div class="entry">
+				<p><img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/pagination.gif" alt="Pagination" class="alignright"></p>
+<p><strong>Pagination</strong> is extremely important in any web
+application. Let’s say a client has a database with 10,000 cars for
+sale. You, the intrepid web developer, are hired to build a web front
+end to the database. You would never want to return a list of all
+10,000 cars at once! When the web browser finished displaying the list
+(several days later), the user’s eyes would either glaze over from
+information overload or be left scrolling down the page for miles.</p>
+<p>Instead you would opt for a more sensible approach and only return a
+subset of the list to the user—a “page”. The first page of results
+might have just 30 cars on it and include a link to the next page. That
+page would have another 30 cars listed and a link to both the next page
+and previous page. Or you might decide to show a list of all pages with
+links to allow the user to skip around. You would probably include a
+description on the page to communicate what part of the subset a user
+is viewing (e.g. “Page 1 of 20″ or “Cars 1-30 out of 10,000″). That is
+pagination.</p>
+<p><a href="http://www.google.com/" target="_blank">Google</a> provides
+a good example of pagination. Search for any word. Look at the top of
+the page and you’ll see the description of the page results “Results 1
+- 10 of about 1,000,000 for…”. Look at the bottom of the page and
+you’ll see “1 2 3 4 … Next” underneath the expanding o’s in Google.
+This isn’t the only way to navigate paginated pages, but it illustrates
+the concept clearly.</p>
+<p><img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/google_pagination.png" alt="Google Pagination" class="centered"></p>
+<p>After the jump, I’ll demonstrate three different techniques for performing pagination on database records in Ruby on Rails.</p>
+<p><span id="more-72"></span></p>
+<h3>Pagination Overview</h3>
+<p>Any paginated web page, regardless of the technology behind it,
+requires two sets of information—a subset of records and information
+about the complete set of records. The subset will be the “current
+page” and those records will be displayed in the browser page (usually
+in either a list or a grid). The information about the total set
+provides useful information, such as “You are viewing page 2 out of 7″
+or “Displaying records 40-60 out of 100″, as well as navigation links
+to the other pages.</p>
+<p>In Ruby on Rails, there are three ways to do pagination:</p>
+<ul>
+<li>1. Simple pagination</li>
+<li>2. Custom pagination</li>
+<li>3. Plug-in pagination</li>
+</ul>
+<p>Pagination will always take place in the Controller, where you’ll
+both find the records in the database to display and determine the
+pagination information. The View will take care of displaying the
+results of the pagination, but the heavy lifting will already be done.
+For that reason, let’s hold off on looking at how to display pagination
+results in the View until we’ve examined the first two types of Rails
+pagination.</p>
+<h3>1. Simple Pagination</h3>
+<p>Simple pagination is built into Rails via the <a href="http://api.rubyonrails.org/classes/ActionController/Pagination.html" target="_blank">Pagination module</a>.  In simple cases, it can do the job for you.  Scaffolding uses it.  The <span class="code"><a href="http://api.rubyonrails.org/classes/ActionController/Pagination.html#M000130" target="_blank">paginate</a></span> method performs both the find and the pagination in one step.</p>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br>2<br>3<br>4<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"><span class="kw1">def</span> list<br>
+&nbsp; <span class="re1">@car_pages</span>, <span class="re1">@cars</span> = paginate<span class="br0">(</span><span class="re3">:cars</span>, <br>
+&nbsp; &nbsp; <span class="re3">:conditions</span> <span class="sy0">=&gt;</span> <span class="st0">'available = 1'</span>, <span class="re3">:order</span> <span class="sy0">=&gt;</span> <span class="st0">'price DESC'</span>, <span class="re3">:per_page</span> <span class="sy0">=&gt;</span> <span class="nu0">20</span><span class="br0">)</span><br>
+<span class="kw1">end</span></div></td></tr></tbody></table></div>
+<p><span class="code">Paginate</span> takes a collection id as it’s
+first argument. The collection id is basically the plural, lowercase
+form of the Model name. In this case, it will be looking for a Model
+called “Car”. After the first argument, <span class="code">paginate</span> takes a list of options.  Most of those options are ones that can be passed to the <span class="code">find</span> method (<span class="code">:include, :joins, :conditions, :order, :select</span>) and that’s because <span class="code">paginate</span> is going to use <a href="http://api.rubyonrails.org/classes/ActiveRecord/Base.html#M000992" target="_blank">Model.find(:all, *args)</a> to retrieve the records.</p>
+<p>There is one key difference: <span class="code">paginate</span> doesn’t accept <span class="code">:limit</span> or <span class="code">:offset</span> as options, two ways to communicate to the database which subset of records to return.  That’s because <span class="code">paginate</span> is going to determine those values itself using the <span class="code">:per_page</span> option and the value of <span class="code">params[:page]</span>. (<em>Important Note:</em> <span class="code">params[:page]</span> is not passed as an argument to <span class="code">paginate</span> but pulled from the global parameters.) It makes sense that <span class="code">params[:page]</span> is the current page of records to show. <span class="code">:limit</span>, or how many records to retrieve, is determined by <span class="code">:per_page</span>. <span class="code">:offset</span>, which dictates the starting record for retrieval is calculated as <span class="code">((params[:page] - 1) * :per_page)</span>.</p>
+<p><span class="code">Paginate</span> also does two other things besides find the records. It gets a count of all the records, similar to <a href="http://api.rubyonrails.org/classes/ActiveRecord/Calculations/ClassMethods.html#M000951" target="_blank">Model.count(*args)</a>,
+and it creates a Paginator object that we can use in the View. The
+Paginator object keeps track of all the pagination information—the
+total record count, the current page, how many records on this page,
+the total number of pages, information about the next and previous
+pages, etc. I’ll show you how to work with the Paginator object when we
+talk about the View.</p>
+<p>Once it is done, <span class="code">paginate</span> returns two
+items: the paginator object and a collection of the items on the
+current page. Because the method returns two values, it uses the double
+assignment syntax <span class="code">(x, y = paginate(z))</span>. Don’t let that confuse you if you haven’t seen double assignment before.</p>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"><span class="co1"># Example of double assignment syntax</span><br>
+<span class="kw1">def</span> add_and_subtract<span class="br0">(</span> value1, value2 <span class="br0">)</span><br>
+&nbsp; add = value1 <span class="sy0">+</span> value2<br>
+&nbsp; subtract = value1 <span class="sy0">-</span> value2<br>
+&nbsp; <span class="kw2">return</span> add, subtract<br>
+<span class="kw1">end</span><br>
+<br>
+var1, var2 = add_and_subtract<span class="br0">(</span><span class="nu0">10</span>, <span class="nu0">4</span><span class="br0">)</span><br>
+<br>
+<span class="co1"># var1 will be 14 and var2 will be 6.</span></div></td></tr></tbody></table></div>
+<p>After the <span class="code">paginate</span> method has made its
+double assignment to two instance variables, the View will be able to
+use them. In our example, @cars will be the collection of database
+records that is appropriate for this page. You can simply loop through
+the collection to display them, just like you would if you weren’t
+doing pagination. @car_pages will be an instance of the Paginator.</p>
+<h3>2. Custom pagination</h3>
+<p>If you find that the <span class="code">paginate</span> method
+doesn’t do everything you need, you can easily build your own custom
+pagination. Maybe your find is complex, maybe you are using
+find_by_sql, or maybe you want to add more bells and whistles. Luckily
+creating your own isn’t much more difficult than using the <span class="code">paginate</span> method.</p>
+<p>Like the <span class="code">paginate</span> method, you’ll just need
+to determine the total number of items in the found set, the number of
+items per page, and the current page. Then you will be able to find the
+records and create a Paginator object.</p>
+<p>Here you’ll also want to make a choice. Will it be more efficient
+for you to find ALL the matching records, count them, then display just
+a page of the found set? Or will it be more efficient to make two calls
+to the database: 1) an SQL COUNT of records that would match, 2) a find
+of only the current records being shown on the current page. The first
+approach will only hit your SQL database once, but will get a lot of
+information during that trip. The second approach will hit your SQL
+database twice, but will return two smaller pieces of information on
+each trip. (The <span class="code">paginate</span> method uses the second approach.)</p>
+<p>The first is quicker to code but really only suitable for very small data sets.  The second more robust and scalable. If I am <em>certain</em>
+that a table will never have more than 100 records in it, I use the
+first one. If the table could grow to eventually hold thousands of
+records, I use the second one.</p>
+<p>Here’s the single-trip technique.</p>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"><span class="co1"># Custom pagination in four easy steps, 1 SQL call</span><br>
+<span class="kw1">def</span> list<br>
+&nbsp; &nbsp; <span class="co1"># step 1: set the variables you'll need</span><br>
+&nbsp; &nbsp; page = <span class="br0">(</span>params<span class="br0">[</span><span class="re3">:page</span><span class="br0">]</span> <span class="sy0">||</span>= <span class="nu0">1</span><span class="br0">)</span>.<span class="me1">to_i</span><br>
+&nbsp; &nbsp; items_per_page = <span class="nu0">20</span><br>
+&nbsp; &nbsp; offset = <span class="br0">(</span>page <span class="sy0">-</span> <span class="nu0">1</span><span class="br0">)</span> <span class="sy0">*</span> items_per_page<br>
+<br>
+&nbsp; &nbsp; <span class="co1"># step 2: do your custom find without doing any kind of limits or offsets</span><br>
+&nbsp; &nbsp; <span class="co1"># &nbsp;i.e. get everything on every page, don't worry about pagination yet</span><br>
+&nbsp; &nbsp; <span class="re1">@items</span> = Item.<span class="me1">find_with_some_custom_method</span><span class="br0">(</span><span class="br0">)</span><br>
+<br>
+&nbsp; &nbsp; <span class="co1"># step 3: create a Paginator, the second argument has to be the number of ALL items on all pages</span><br>
+&nbsp; &nbsp; <span class="re1">@item_pages</span> = Paginator.<span class="me1">new</span><span class="br0">(</span><span class="kw2">self</span>, <span class="re1">@items</span>.<span class="me1">length</span>, items_per_page, page<span class="br0">)</span><br>
+<br>
+&nbsp; &nbsp; <span class="co1"># step 4: only make a subset of @items available to the view</span><br>
+&nbsp; &nbsp; <span class="re1">@items</span> = <span class="re1">@items</span><span class="br0">[</span>offset..<span class="br0">(</span>offset <span class="sy0">+</span> items_per_page <span class="sy0">-</span> <span class="nu0">1</span><span class="br0">)</span><span class="br0">]</span><br>
+<span class="kw1">end</span></div></td></tr></tbody></table></div>
+<p>The two-trip method is almost as easy. You’ll just need two SQL
+methods. In step 2 you do a count of the records that would match and
+then in step 4 you retrieve only the records for the current page. Keep
+in mind that “offset” and “items_per_page” will need to be passed to
+your custom find method as the :offset and :limit parameters. (<span class="code">Paginate</span>
+does this by getting :limit from its :per_page option, and getting
+:offset by asking a Paginator object, like the one you create in step
+3, to return <span class="code">paginator.current.offset</span>. You could pass the paginator object (@item_pages) into your find method and do the same thing.)</p>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"><span class="co1"># Custom pagination in four easy steps, 2 SQL calls (More robust!)</span><br>
+<span class="kw1">def</span> list<br>
+&nbsp; &nbsp; <span class="co1"># step 1: set the variables you'll need</span><br>
+&nbsp; &nbsp; page = <span class="br0">(</span>params<span class="br0">[</span><span class="re3">:page</span><span class="br0">]</span> <span class="sy0">||</span>= <span class="nu0">1</span><span class="br0">)</span>.<span class="me1">to_i</span><br>
+&nbsp; &nbsp; items_per_page = <span class="nu0">20</span><br>
+&nbsp; &nbsp; offset = <span class="br0">(</span>page <span class="sy0">-</span> <span class="nu0">1</span><span class="br0">)</span> <span class="sy0">*</span> items_per_page<br>
+<br>
+&nbsp; &nbsp; <span class="co1"># step 2: instead of performing a find, just get a count</span><br>
+&nbsp; &nbsp; item_count = Item.<span class="me1">count_with_some_custom_method</span><span class="br0">(</span><span class="br0">)</span><br>
+<br>
+&nbsp; &nbsp; <span class="co1"># step 3: create a Paginator, the second argument has to be the number of ALL items on all pages</span><br>
+&nbsp; &nbsp; <span class="re1">@item_pages</span> = Paginator.<span class="me1">new</span><span class="br0">(</span><span class="kw2">self</span>, item_count, items_per_page, page<span class="br0">)</span><br>
+<br>
+&nbsp; &nbsp; <span class="co1"># step 4: only find the requested subset of @items</span><br>
+&nbsp; &nbsp; <span class="re1">@items</span> = Item.<span class="me1">find_with_some_custom_method</span><span class="br0">(</span>items_per_page, offset<span class="br0">)</span><br>
+<span class="kw1">end</span></div></td></tr></tbody></table></div>
+<p>Just like with simple pagination, both methods above result in a
+collection (@items) and a Paginator object (@item_pages). You can loop
+through the collection to display the current page of items, and you
+can use the Paginator object in the View to get information about the
+pagination.</p>
+<h3>Pagination in the View</h3>
+<p>Once your controller has assigned values to @item_pages (a Paginator
+instance) and @items (a collection of ActiveRecord objects), you are
+ready to utilize them in your view. It’s not difficult to work with the
+Paginator object. There is a <a href="http://api.rubyonrails.org/classes/ActionView/Helpers/PaginationHelper.html#M000504" target="_blank">Pagination Helper</a> which can output all the page links for you.</p>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"><span class="sy0">&lt;%</span>= pagination_links<span class="br0">(</span>@item_pages<span class="br0">)</span> <span class="sy0">%&gt;</span></div></td></tr></tbody></table></div>
+<p>Or you can just as easily write your own links. It is not much
+harder and it is more flexible. Here’s are some simple examples of how
+to do it for yourself.</p>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"># Previous and Next Links<br>
+# @items_pages.current is the current page being displayed by the pagination<br>
+<br>
+# show a previous link if there is a previous page from the current page<br>
+<span class="sy0">&lt;%</span>= link_to<span class="br0">(</span><span class="st0">'previous'</span>, <br>
+&nbsp; &nbsp; &nbsp; <span class="re3">:page</span> <span class="sy0">=&gt;</span> <span class="re1">@item_pages</span>.<span class="me1">current</span>.<span class="me1">previous</span><span class="br0">)</span> <span class="kw1">if</span> <span class="re1">@item_pages</span>.<span class="me1">current</span>.<span class="me1">previous</span> <span class="sy0">%&gt;</span><br>
+<br>
+# show a next link if there is a next page from the current page<br>
+<span class="sy0">&lt;%</span>= link_to<span class="br0">(</span><span class="st0">'next'</span>, <br>
+&nbsp; &nbsp; &nbsp; <span class="re3">:page</span> <span class="sy0">=&gt;</span> <span class="re1">@item_pages</span>.<span class="me1">current</span>.<span class="kw1">next</span><span class="br0">)</span> <span class="kw1">if</span> <span class="re1">@item_pages</span>.<span class="me1">current</span>.<span class="kw1">next</span> <span class="sy0">%&gt;</span></div></td></tr></tbody></table></div>
+<p>The one pitfall is to make sure that any other parameters you want
+to keep are also passed in the link. (You’ll notice that the scaffold’s
+pagination does not do this by default.)</p>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br>2<br>3<br>4<br>5<br>6<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"># List of Page Numbers with Links<br>
+Pages: <br>
+<span class="sy0">&lt;%</span> <span class="kw1">for</span> page <span class="kw1">in</span> <span class="re1">@item_pages</span> <span class="sy0">-%&gt;</span><br>
+&nbsp; <span class="sy0">&lt;%</span>= link_to_unless<span class="br0">(</span><span class="br0">(</span>params<span class="br0">[</span><span class="re3">:page</span><span class="br0">]</span>.<span class="me1">to_i</span> == page.<span class="me1">number</span><span class="br0">)</span>, <br>
+&nbsp; &nbsp; &nbsp; &nbsp; page.<span class="me1">number</span>, <span class="re3">:page</span> <span class="sy0">=&gt;</span> page<span class="br0">)</span> <span class="sy0">%&gt;</span>&amp;nbsp;<br>
+<span class="sy0">&lt;%</span> <span class="kw1">end</span> <span class="sy0">-%&gt;</span></div></td></tr></tbody></table></div>
+<div class="codecolorer-container ruby vibrant" style="overflow: auto; white-space: nowrap; width: 620px;"><table cellpadding="0" cellspacing="0"><tbody><tr><td class="line-numbers"><div>1<br>2<br>3<br>4<br></div></td><td><div class="ruby codecolorer" style="font-family: Monaco,Lucida Console,monospace;"># Information about the full set and subset of records<br>
+Displaying <span class="sy0">&lt;%</span>= <span class="re1">@item_pages</span>.<span class="me1">current_page</span>.<span class="me1">first_item</span> <span class="sy0">%&gt;</span> <br>
+through <span class="sy0">&lt;%</span>= <span class="re1">@item_pages</span>.<span class="me1">current_page</span>.<span class="me1">last_item</span> <span class="sy0">%&gt;</span> <br>
+of <span class="sy0">&lt;%</span>= <span class="re1">@item_pages</span>.<span class="me1">item_count</span> <span class="sy0">%&gt;</span> items.</div></td></tr></tbody></table></div>
+<h3>3. Plug-in pagination</h3>
+<p>For a few months it seemed that built-in Pagination would be revised
+dramatically in the upcoming Rails 2.0, but that is no longer the case.
+Now all pagination will be moved into a plug-in and out of the core of
+Rails. There, the pagination techniques above, can compete with the
+plug-ins below. You’ll be able to pick the one that is best for you.</p>
+<p>There’s nothing inherently wrong with the pagination built into
+Rails. I think if you understand it, it will work well for you. But
+some developers don’t think pagination is as slick or elegant as it
+could be. Some of those developers have even gone one step further than
+custom pagination and reinvented pagination as a plug-in. Each offers
+different features, and each has loyal users who swear by them.</p>
+<ul>
+<li><a href="http://cardboardrocket.com/2006/09/06/paginating-find-now-even-sexier/" target="_blank">paginating_find</a></li>
+<li><a href="http://paginator.rubyforge.org/" target="_blank">paginator</a></li>
+<li><a href="http://errtheblog.com/post/4791" target="_blank">will_paginate</a></li>
+</ul>
+<p>If you’ve never used plug-ins before, the Rails Wiki has a good <a href="http://wiki.rubyonrails.com/rails/pages/Plugins" target="_blank">plug-in introduction</a> to get you started.</p>
+<h3>Conclusion</h3>
+<p>Regardless of which way you decide to go, you have a variety of
+pagination options available in Rails. Remember, the basic principle is
+always the same. You need to determine two things to paginate: the
+records to display on the current page and information about the rest
+of the data set.</p>
+<p>My recommendation is to start with Simple Pagination. Once you
+understand how it works, you’ll be better prepared for further
+customizations. If you find it limiting or that it won’t work in a
+certain case, then move to Custom Pagination. Once that feels
+comfortable and you start looking for futher enhancements, try the
+plug-ins listed above. And once you outgrow those… well, then you can
+write your own plug-in!</p>
+
+<!-- AddThis Button BEGIN -->
+<script type="text/javascript">
+var addthis_pub = '';
+var addthis_brand = 'Null Is Love';var addthis_language = 'en';var addthis_options = 'email, favorites, digg, delicious, google, facebook, friendfeed, linkedin, mixx, reddit, stumbleupon, technorati, twitter, more';
+</script>
+<div class="addthis_container"><a href="http://www.addthis.com/bookmark.php" onmouseover="return addthis_open(this, '', 'http%3A%2F%2Fwww.nullislove.com%2F2007%2F05%2F24%2Fpagination-in-rails%2F', 'Pagination+in+Rails')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/lg-share-en.gif" alt="Bookmark and Share" style="border: 0pt none ; padding: 0pt;" border="0" height="16" width="125"></a><script type="text/javascript" src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/addthis_widget.js"></script></div>
+<!-- AddThis Button END -->
+				
+				<p class="postmetadata alt">
+					<small>
+						This entry was posted
+												on Thursday, May 24th, 2007 at 12:14 pm						and is filed under <a href="http://www.nullislove.com/category/ruby-on-rails/" title="View all posts in Ruby on Rails" rel="category tag">Ruby on Rails</a>,  <a href="http://www.nullislove.com/category/tutorials/" title="View all posts in Tutorials" rel="category tag">Tutorials</a>.
+						You can follow any responses to this entry through the <a href="http://www.nullislove.com/2007/05/24/pagination-in-rails/feed/">RSS 2.0</a> feed.
+
+													You can <a href="#respond">leave a response</a>, or <a href="http://www.nullislove.com/2007/05/24/pagination-in-rails/trackback/" rel="trackback">trackback</a> from your own site.
+
+						
+					</small>
+				</p>
+
+			</div>
+		</div>
+
+	
+<!-- You can start editing here. -->
+
+	<h3 id="comments">12 Responses to “Pagination in Rails”</h3>
+
+	<ol class="commentlist">
+
+	
+		<li class="alt" id="comment-279">
+			<cite><a href="http://www.nullislove.com/2007/06/11/classic-pagination-rip/" rel="external nofollow" class="url">Null is Love » Blog Archive » Classic Pagination R.I.P.</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-279" title="">June 11th, 2007 at 11:06 am</a> </small>
+
+			<p>[...]
+Daigle has the news: classic pagination has been removed from Edge
+Rails and, as I mentioned in a previous post, classic pagination will
+now become a plug-in. If you are currently using Rails version 1.2.3 or
+[...]</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-390">
+			<cite>David</cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-390" title="">July 21st, 2007 at 11:36 pm</a> </small>
+
+			<p>You sir, are my hero.<br>
+Thanks for saving me a good few hours.</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-466">
+			<cite><a href="http://nubyonrails.wordpress.com/" rel="external nofollow" class="url">max williams</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-466" title="">August 13th, 2007 at 7:41 am</a> </small>
+
+			<p>Hi Kevin, thanks for the excellent tutorial - my list page is lovely now <img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/icon_smile.gif" alt=":)" class="wp-smiley"> </p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-467">
+			<cite><a href="http://nubyonrails.wordpress.com/" rel="external nofollow" class="url">max williams</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-467" title="">August 13th, 2007 at 1:13 pm</a> </small>
+
+			<p>Actually
+Kevin i have a question - my list page is a list of articles. Given an
+article_id, do you know how i would get the number of the page with
+that article on it?</p>
+<p>thanks!<br>
+max</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-468">
+			<cite><a href="http://www.nullislove.com/" rel="external nofollow" class="url">Kevin Skoglund</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-468" title="">August 13th, 2007 at 4:18 pm</a> </small>
+
+			<p>The only way to do that would be to scan through each of the pages looking for that article_id.</p>
+<p>I’m not sure what you are trying to do, but my guess is there is an
+easier way than determining the page with that article on it.</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-521">
+			<cite><a href="http://lindenlan.net/" rel="external nofollow" class="url">Brian</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-521" title="">August 31st, 2007 at 4:16 pm</a> </small>
+
+			<p>pagination_links() can preserve additional query parameters via the :params option.  </p>
+<p>pagination_links( @item_pages, :params =&gt; {:myfield =&gt; params[:myfield]} )</p>
+<p>No need to manually make your own using a for-loop. Besides you can
+use the pagination_links_each() method to customize the output rather
+than using a for-loop. If you look at the source code, you’ll see that
+pagination_links() wraps pagination_links_each().</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-570">
+			<cite><a href="http://www.supersaas.com/" rel="external nofollow" class="url">Jan M</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-570" title="">October 5th, 2007 at 5:46 am</a> </small>
+
+			<p>I
+have the same problem as Max: I want to jump to the page with the last
+change on it after an update. Seems like a reasonable thing that lots
+of people want to do right?</p>
+<p>The only thing I can think of is reading in all article IDs and
+calculate the page from that and then read all the fields for just that
+page. Still seems wasteful for large collections. But there does not
+seem to be a SQL query to give you the position of a record in a sorted
+list so I guess that’s the only way.</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-572">
+			<cite><a href="http://www.supersaas.com/" rel="external nofollow" class="url">Jan M</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-572" title="">October 5th, 2007 at 6:13 am</a> </small>
+
+			<p>Just solved my own and max’s problem, simple really:<br>
+You can do a SELECT COUNT(*) FROM table WHERE sort_field &lt; updated_value<br>
+The sort_field is whatever you use in the ORDER BY clause in the
+paginator and updated_value is the value of that field in the recently
+created or updated item. Divide the result by the page size to get the
+page number to feed to the paginator. (Seems like a nice feature to
+include in a paginator library by the way…)</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1022">
+			<cite>Dinesh</cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-1022" title="">February 18th, 2008 at 5:57 pm</a> </small>
+
+			<p>Isn’t
+the single trip version incorrect? Seems to me it will hit the database
+with a full query every time a page link (or next / previous) is
+clicked.</p>
+<p>What am I not understanding about this?</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-1027">
+			<cite><a href="http://www.nullislove.com/" rel="external nofollow" class="url">Kevin Skoglund</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-1027" title="">February 19th, 2008 at 11:07 am</a> </small>
+
+			<p>Yes,
+EVERY pagination technique (besides a JavaScript solution) is going to
+require a new query to the web server when a page link is clicked and
+that will result in a new SQL query.</p>
+<p>The “single trip version” goes to the database one time per page
+click and gets everything it needs to render the page contents and the
+pagination. It retrieves all items in the database at once.</p>
+<p>The “multi trip version” goes to the database two times per page
+click. Once to count how many items there are altogether (so it knows
+how many pages are possible) and a second time to get the items that
+show up on this page.</p>
+<p>But each click still results in at least one SQL call.</p>
+
+		</li>
+
+	
+	
+		<li class="alt" id="comment-1192">
+			<cite>Jonathan</cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-1192" title="">June 29th, 2008 at 12:29 pm</a> </small>
+
+			<p>Hi,<br>
+Just to make you aware - it seems as though someone has plagiarised
+your content on the following website (link-removed). Great article
+though, thanks very much!<br>
+jonathan</p>
+
+		</li>
+
+	
+	
+		<li class="" id="comment-1193">
+			<cite><a href="http://www.nullislove.com/" rel="external nofollow" class="url">Kevin Skoglund</a></cite> Says:
+						<br>
+
+			<small class="commentmetadata"><a href="#comment-1193" title="">June 29th, 2008 at 1:52 pm</a> </small>
+
+			<p>Thanks
+for the heads up, Jonathan. I have written the blog’s owner. (I removed
+his link from your comment so I don’t compound the problem.)</p>
+
+		</li>
+
+	
+	
+	</ol>
+
+ 
+
+
+<h3 id="respond">Leave a Reply</h3>
+
+
+<form action="http://www.nullislove.com/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input name="author" id="author" value="" size="22" tabindex="1" type="text">
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input name="email" id="email" value="" size="22" tabindex="2" type="text">
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input name="url" id="url" value="" size="22" tabindex="3" type="text">
+<label for="url"><small>Website</small></label></p>
+
+
+<!--<p><small><strong>XHTML:</strong> You can use these tags: &lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </small></p>-->
+
+<p><textarea name="comment" id="comment" cols="100" rows="10" tabindex="4"></textarea></p>
+
+<p><input name="submit" id="submit" tabindex="5" value="Submit Comment" type="submit">
+<input name="comment_post_ID" value="72" type="hidden">
+</p>
+
+</form>
+
+
+
+	
+	</div>
+
+<div id="sidebar">
+  <ul>
+
+          <p>&lt; <a href="http://www.nullislove.com/">Return to Null is Love homepage</a> &gt;</p>
+        <li>
+      <form method="get" id="searchform" action="http://www.nullislove.com/">
+	<div>
+		<input value="" name="s" id="s" type="text">
+		<input id="searchsubmit" value="Search" type="submit">
+	</div>
+</form>
+    </li>
+
+    <li><h2>Author</h2>
+    <p>Kevin Skoglund is the lead web developer at <a href="http://www.novafabrica.com/" target="_blank">Nova Fabrica</a> and an instructor specializing in Ruby on Rails, PHP, SQL, HTML, and CSS.</p>
+    </li>
+
+    <li>
+        </li>
+
+    <li><h2>Training</h2>
+      <ul>
+
+        <li><span style="color: black;">PHP with MySQL Essential Training</span>
+        <ul class="children">
+          <li>Online: <a href="http://movielibrary.lynda.com/html/modPage.asp?ID=435" target="_blank">Lynda.com</a></li>
+          <li>CD-ROM: <a href="http://www.amazon.com/gp/product/159671364X?ie=UTF8&amp;tag=pipr-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=159671364X">Amazon.com</a><img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/ir_004.gif" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"></li>
+        </ul>
+        </li>
+
+        <li><span style="color: black;">PHP with MySQL Beyond the Basics</span>
+        <ul class="children">
+          <li>Online: <a href="http://movielibrary.lynda.com/html/modPage.asp?ID=653" target="_blank">Lynda.com</a></li>
+          <li>CD-ROM: <a href="http://www.amazon.com/gp/product/1596715413?ie=UTF8&amp;tag=pipr-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1596715413">Amazon.com</a><img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/ir.gif" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"></li>
+        </ul>
+        </li>
+
+        <li><span style="color: black;">Ruby on Rails Essential Training</span>
+        <ul class="children">
+          <li>Online: <a href="http://movielibrary.lynda.com/html/modPage.asp?ID=324" target="_blank">Lynda.com</a></li>
+          <li>CD-ROM: <a href="http://www.amazon.com/gp/product/1596713089?ie=UTF8&amp;tag=pipr-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1596713089">Amazon.com</a><img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/ir_002.gif" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"></li>
+        </ul>
+        </li>
+
+        <li><span style="color: black;">Ruby on Rails Beyond the Basics</span>
+        <ul class="children">
+          <li>Online: <a href="http://movielibrary.lynda.com/html/modPage.asp?ID=395" target="_blank">Lynda.com</a></li>
+          <li>CD-ROM: <a href="http://www.amazon.com/gp/product/1596713836?ie=UTF8&amp;tag=pipr-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1596713836">Amazon.com</a><img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/ir_003.gif" alt="" style="border: medium none  ! important; margin: 0px ! important;" border="0" height="1" width="1"></li>
+        </ul>
+        </li>
+
+      </ul>
+    </li>
+    
+    <li><h2>Love</h2>
+      <ul>
+        <li style="padding-bottom: 4px;">
+        <a href="mailto:tips@nullislove.com">
+        Tips, News and Ideas&nbsp;<img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/email_icon.gif" alt="+"></a>
+        </li>
+        <li style="padding-bottom: 5px;">
+        <a href="http://www.nullislove.com/feed/">
+        Subscribe to RSS feed&nbsp;<img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/feed_icon.gif" alt="+"></a>
+        </li>
+        <li style="padding-bottom: 3px;">
+        <a href="http://del.icio.us/post" onclick="window.open('http://del.icio.us/post?v=4&amp;noui&amp;jump=close&amp;url='+encodeURIComponent(http://www.nullislove.com/2007/05/24/pagination-in-rails/)+'&amp;title='+encodeURIComponent(Pagination in Rails),'delicious', 'toolbar=no,width=700,height=400'); return false;">
+        Add to del.icio.us&nbsp;<img src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/delicious.gif" alt="+"></a>
+        </li>
+              </ul>
+    </li>
+
+    <li class="categories"><h2>Categories</h2><ul>	<li class="cat-item cat-item-8"><a href="http://www.nullislove.com/category/ajax/" title="View all posts filed under Ajax">Ajax</a> (2)
+</li>
+	<li class="cat-item cat-item-5"><a href="http://www.nullislove.com/category/css/" title="View all posts filed under CSS">CSS</a> (9)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://www.nullislove.com/category/culture/" title="View all posts filed under Culture">Culture</a> (29)
+</li>
+	<li class="cat-item cat-item-17"><a href="http://www.nullislove.com/category/design/" title="View all posts filed under Design">Design</a> (17)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://www.nullislove.com/category/general/" title="View all posts filed under General">General</a> (20)
+</li>
+	<li class="cat-item cat-item-6"><a href="http://www.nullislove.com/category/html/" title="View all posts filed under HTML">HTML</a> (6)
+</li>
+	<li class="cat-item cat-item-9"><a href="http://www.nullislove.com/category/javascript/" title="View all posts filed under JavaScript">JavaScript</a> (5)
+</li>
+	<li class="cat-item cat-item-10"><a href="http://www.nullislove.com/category/mysql/" title="View all posts filed under MySQL">MySQL</a> (11)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://www.nullislove.com/category/news/" title="View all posts filed under News">News</a> (7)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://www.nullislove.com/category/php/" title="View all posts filed under PHP">PHP</a> (34)
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.nullislove.com/category/ruby-on-rails/" title="View all posts filed under Ruby on Rails">Ruby on Rails</a> (68)
+</li>
+	<li class="cat-item cat-item-19"><a href="http://www.nullislove.com/category/tutorials/" title="View all posts filed under Tutorials">Tutorials</a> (21)
+</li>
+	<li class="cat-item cat-item-12"><a href="http://www.nullislove.com/category/unixlinux/" title="View all posts filed under Unix/Linux">Unix/Linux</a> (5)
+</li>
+</ul></li>
+    <li><h2>Archives</h2>
+      <ul>
+      	<li><a href="http://www.nullislove.com/2009/07/" title="July 2009">July 2009</a></li>
+	<li><a href="http://www.nullislove.com/2009/04/" title="April 2009">April 2009</a></li>
+	<li><a href="http://www.nullislove.com/2009/03/" title="March 2009">March 2009</a></li>
+	<li><a href="http://www.nullislove.com/2008/11/" title="November 2008">November 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/08/" title="August 2008">August 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/07/" title="July 2008">July 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/06/" title="June 2008">June 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/05/" title="May 2008">May 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/04/" title="April 2008">April 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/03/" title="March 2008">March 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/02/" title="February 2008">February 2008</a></li>
+	<li><a href="http://www.nullislove.com/2008/01/" title="January 2008">January 2008</a></li>
+	<li><a href="http://www.nullislove.com/2007/12/" title="December 2007">December 2007</a></li>
+	<li><a href="http://www.nullislove.com/2007/11/" title="November 2007">November 2007</a></li>
+	<li><a href="http://www.nullislove.com/2007/10/" title="October 2007">October 2007</a></li>
+	<li><a href="http://www.nullislove.com/2007/09/" title="September 2007">September 2007</a></li>
+	<li><a href="http://www.nullislove.com/2007/08/" title="August 2007">August 2007</a></li>
+	<li><a href="http://www.nullislove.com/2007/07/" title="July 2007">July 2007</a></li>
+	<li><a href="http://www.nullislove.com/2007/06/" title="June 2007">June 2007</a></li>
+	<li><a href="http://www.nullislove.com/2007/05/" title="May 2007">May 2007</a></li>
+      </ul>
+    </li>
+
+    <li class="pagenav"><h2>Pages</h2><ul><li class="page_item page-item-260"><a href="http://www.nullislove.com/ruby-on-rails-changes-and-troubleshooting/" title="Ruby on Rails Changes and Troubleshooting">Ruby on Rails Changes and Troubleshooting</a></li>
+</ul></li>
+    
+    
+    <li style="margin-top: 4em;"><h2>Copyright</h2>
+    <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/" style="margin: 6px 6px 0px 0px; float: left;">
+      <img alt="Creative Commons License" style="border-width: 0pt;" src="Null%20is%20Love%20%C2%BB%20Blog%20Archive%20%C2%BB%20Pagination%20in%20Rails-Dateien/somerights20.png">
+    </a>
+    <p>Unless otherwise stated, all original material included on this weblog is copyright Nova Fabrica, Inc. and licensed under a 
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons License</a>. (For non-commercial uses, but giving credit is love.)</p>
+    </li>
+
+  </ul>
+</div>
+
+
+			<hr>
+			<div id="footer">
+				<p>
+					<a href="http://www.nullislove.com/">Null is Love</a> is powered by <a href="http://wordpress.org/">WordPress</a>
+					<br>
+					Copyright 2009, Nova Fabrica, Inc.
+					<!-- 14 queries. 0.312 seconds. -->
+				</p>
+			</div>
+		</div>
+	</body></html>

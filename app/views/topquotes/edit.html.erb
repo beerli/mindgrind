@@ -1,0 +1,16 @@
+<h1>Editing topquote</h1>
+
+<% form_for(@topquote) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_area :title %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @topquote %> |
+<%= link_to 'Back', topquotes_path %>

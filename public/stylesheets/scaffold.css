@@ -1,20 +1,36 @@
-body { background-color: #fff; color: #333; }
-
+/*body { background-color: #F0F0F0; color: #333; width: 800px; margin:0 auto;}*/
+ 
 body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: sans-serif, verdana, arial, helvetica, sans-serif;
   font-size:   13px;
-  line-height: 18px;
+ /* line-height: 18px;*/
 }
+
+h1 {color: #006699;}
+
+a { color: #000; }
+a:visited { color: #666; }
+a:hover { color: #fff; background-color:#000; }
+
+div.post {margin-bottom: 17px; margin-left: 210px; width: 600px; }
+p.post_title {font-size: 15px; color: #006699; line-height:5px;}
+p.post_body {font-size: 13px; line-height: 17px; text-align: justify; margin-bottom: 10px; }
+p.post_tags {text-align:right;}
+p.post_foot {text-align: right; margin-bottom: 30px;}
+
+p.flashnotice {color: white; background-color:#006699;}
+div.bodycontainer {background-color: #F0F0F0; color: #333; width: 850px; margin:0 auto; padding:5px;}
+div.header {height:100px;}
+div.navigation {float:left;}
+
+p.headline {color: #006699; font-size: 20px; margin: 10px;}
+p.topquote {margin: 10px; font-size: 15px;}
 
 pre {
   background-color: #eee;
   padding: 10px;
   font-size: 11px;
 }
-
-a { color: #000; }
-a:visited { color: #666; }
-a:hover { color: #fff; background-color:#000; }
 
 .fieldWithErrors {
   padding: 2px;
