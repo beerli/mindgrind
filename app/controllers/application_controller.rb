@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
 
   # Filters added to this controller apply to all controllers in the application.
   # Likewise, all the methods added will be available for all controllers.
-
-
    
     helper_method :current_user_session, :current_user
     filter_parameter_logging :password, :password_confirmation
@@ -51,7 +49,3 @@ class ApplicationController < ActionController::Base
         session[:return_to] = nil
       end
   end
-  
-
-
-
